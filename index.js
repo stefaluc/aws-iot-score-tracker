@@ -4,21 +4,21 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const port = process.env.PORT || 3000;
 
-const button = require('./read_button.js');
+const button = require('./setup-button.js');
 
 server.listen(port, () => {
   console.log(`Listening on port ${port}`);
+
+  // forward button signal to client
   button().on('message', (topic, payload) => {
+    console.log('Received button signal:');
     console.log(payload.toString());
-    console.log(topic);
     io.emit('message', payload.toString());
   });
 });
 
-app.use(express.static(`${__dirname}/public`));
+app.use(express.static(`${__dirname}/client/public`));
 // client needs this served to use socket.io
 app.use(express.static(`${__dirname}/node_modules/socket.io-client/dist`));
 
-io.on('connection', function(socket) {
-  console.log('connected');
-});
+io.on('connection', () => { console.log("Connected to client") });

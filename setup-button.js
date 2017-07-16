@@ -1,5 +1,7 @@
 const deviceModule = require('aws-iot-device-sdk').device;
 
+const TOPIC = 'button_message';
+
 module.exports = () => {
   let certPath = '/home/lucas/aws/certs/';
   const device = deviceModule({
@@ -12,8 +14,8 @@ module.exports = () => {
 
   // device event listeners
   device.on('connect', () => {
-    console.log('connect');
-    device.subscribe('button_message');
+    console.log('Connected to AWS IoT');
+    device.subscribe(TOPIC);
   });
   device.on('close', () => {
     console.log('close');
@@ -29,7 +31,4 @@ module.exports = () => {
   });
 
   return device;
-  // device.on('message', (topic, payload) => {
-  //   console.log('message', topic, payload.toString());
-  // });
 }
