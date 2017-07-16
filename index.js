@@ -8,7 +8,17 @@ const button = require('./read_button.js');
 
 server.listen(port, () => {
   console.log(`Listening on port ${port}`);
-  button();
+  button().on('message', (topic, payload) => {
+    console.log(payload.toString());
+    console.log(topic);
+    io.emit('message', payload.toString());
+  });
 });
 
 app.use(express.static(`${__dirname}/public`));
+// client needs this served to use socket.io
+app.use(express.static(`${__dirname}/node_modules/socket.io-client/dist`));
+
+io.on('connection', function(socket) {
+  console.log('connected');
+});

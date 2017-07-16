@@ -27,7 +27,9 @@ module.exports = () => {
   device.on('error', (error) => {
     console.log('error', error);
   });
-  device.on('message', (topic, payload) => {
-    console.log('message', topic, payload.toString());
-  });
+
+  return device;
+  // device.on('message', (topic, payload) => {
+  //   console.log('message', topic, payload.toString());
+  // });
 }
