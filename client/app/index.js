@@ -1,25 +1,12 @@
 import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 import io from 'socket.io-client';
+import App from './containers/App';
 
 const socket = io();
-
-console.log(socket);
 socket.on('connect', () => {
   console.log('Socket Connected');
-});
-socket.emit('connection');
-socket.on('disconnect', () => {});
-socket.on('message', (data) => {
-  console.log(JSON.parse(data));
+  socket.emit('connection');
 });
 
-class App extends React.Component {
-  render() {
-    return (
-      <p>React</p>
-    )
-  }
-}
-
-render(<App/>, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('app'));

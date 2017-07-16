@@ -1,2 +1,3 @@
 certs
 node_modules
+client/public/bundle.js
