@@ -1,9 +1,11 @@
 import React from 'react';
 
+import '../styles/main.css';
+
 const Score = (props) => {
   return (
-    <div>
-      {props.score}
+    <div className="score">
+      {`${props.side} side: ${props.score}`}
     </div>
   );
 }

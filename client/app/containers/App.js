@@ -5,6 +5,7 @@ const socket = io();
 import { SERIAL_LEFT, SERIAL_RIGHT } from '../consts.js';
 
 import Score from '../components/Score';
+import Message from '../components/Message';
 import '../styles/main.css';
 
 class App extends React.Component {
@@ -14,25 +15,32 @@ class App extends React.Component {
     this.state = {
       scoreLeft: 0,
       scoreRight: 0,
+      showMessage: false,
     };
   }
 
   componentDidMount() {
     socket.on('message', (data) => {
-      console.log('REACHED');
       const { serialNumber, batteryVoltage, clickType } = JSON.parse(data);
-      console.log(serialNumber);
+
       if (clickType === 'SINGLE') {
         if (serialNumber === SERIAL_LEFT) {
           this.setState({scoreLeft: this.state.scoreLeft + 1});
         } else if (serialNumber === SERIAL_RIGHT) {
           this.setState({scoreRight: this.state.scoreRight + 1});
         }
-      } else {
-        this.setState({
-          scoreLeft: 0,
-          scoreRight: 0,
-        });
+      } else if (clickType === 'DOUBLE') {
+        if (!this.state.showMessage) { // first DOUBLE click
+          // user gets 15 seconds to click again
+          setTimeout(() => { this.setState({showMessage: false}); }, 15000);
+          this.setState({showMessage: true});
+        } else { // two DOUBLE clicks within 15 seconds
+          this.setState({
+            scoreLeft: 0,
+            scoreRight: 0,
+            showMessage: false,
+          });
+        }
       }
     });
   }
@@ -40,9 +48,16 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <p className="test">Beer Die</p>
-        Left Side: <Score score={this.state.scoreLeft} />
-        Right Side: <Score score={this.state.scoreRight} />
+        {!this.state.showMessage &&
+          <div id="background" class="grey">
+            <p className="test">Beer Die</p>
+            <Score score={this.state.scoreLeft} side="Left" />
+            <Score score={this.state.scoreRight} side="Right" />
+          </div>
+        }
+        {this.state.showMessage &&
+          <Message color="blue" />
+        }
       </div>
     );
   }
