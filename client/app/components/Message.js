@@ -3,11 +3,13 @@ import React from 'react';
 import '../styles/main.css';
 
 const Message = (props) => {
+  console.log(props);
+  props.changeBackground(props.color);
   return (
-    <div id="background" className={props.color}>
+    <div>
       Double click again to reset the score
     </div>
   );
 }
 
-export default Score;
+export default Message;

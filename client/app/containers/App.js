@@ -16,7 +16,10 @@ class App extends React.Component {
       scoreLeft: 0,
       scoreRight: 0,
       showMessage: false,
+      bgColor: 'grey',
     };
+
+    this.changeBackground = this.changeBackground.bind(this);
   }
 
   componentDidMount() {
@@ -45,18 +48,22 @@ class App extends React.Component {
     });
   }
 
+  changeBackground(color) {
+    this.setState({bgColor: color});
+  }
+
   render() {
     return (
-      <div>
+      <div id="background" className={this.state.bgColor}>
         {!this.state.showMessage &&
-          <div id="background" class="grey">
+          <div>
             <p className="test">Beer Die</p>
             <Score score={this.state.scoreLeft} side="Left" />
             <Score score={this.state.scoreRight} side="Right" />
           </div>
         }
         {this.state.showMessage &&
-          <Message color="blue" />
+          <Message changeBackground={this.changeBackground} color="blue" />
         }
       </div>
     );
