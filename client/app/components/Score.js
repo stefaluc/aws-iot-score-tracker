@@ -5,7 +5,7 @@ import '../styles/main.css';
 const Score = (props) => {
   return (
     <div className="score">
-      {`${props.side} side: ${props.score}`}
+      {props.score}
     </div>
   );
 }

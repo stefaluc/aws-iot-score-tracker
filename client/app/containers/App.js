@@ -20,6 +20,7 @@ class App extends React.Component {
     };
 
     this.changeBackground = this.changeBackground.bind(this);
+    this.resetScore = this.resetScore.bind(this);
   }
 
   componentDidMount() {
@@ -36,7 +37,10 @@ class App extends React.Component {
         if (!this.state.showMessage) { // first DOUBLE click
           // user gets 15 seconds to click again
           setTimeout(() => { this.setState({showMessage: false}); }, 15000);
-          this.setState({showMessage: true});
+          this.setState({
+            showMessage: true,
+            scoreRight: this.state.scoreRight + 1, // temporary until another button is purchased
+          });
         } else { // two DOUBLE clicks within 15 seconds
           this.setState({
             scoreLeft: 0,
@@ -52,19 +56,34 @@ class App extends React.Component {
     this.setState({bgColor: color});
   }
 
+  resetScore(e) {
+    e.preventDefault();
+
+    this.setState({scoreLeft: 0, scoreRight: 0});
+  }
+
   render() {
     return (
-      <div id="background" className={this.state.bgColor}>
-        {!this.state.showMessage &&
-          <div>
-            <p className="test">Beer Die</p>
-            <Score score={this.state.scoreLeft} side="Left" />
-            <Score score={this.state.scoreRight} side="Right" />
-          </div>
-        }
-        {this.state.showMessage &&
-          <Message changeBackground={this.changeBackground} color="blue" />
-        }
+      <div id="main">
+        <div id="reset-button" onClick={this.resetScore}>Reset Score</div>
+        <div id="display">
+          <span id="title">BEER DIE</span>
+          {!this.state.showMessage &&
+            <div id="teams">
+              <div className="teams-side left">
+                <span className="teams-title left">Left Team</span>
+                <Score score={this.state.scoreLeft} />
+              </div>
+              <div className="teams-side right">
+                <span className="teams-title right">Right Team</span>
+                <Score score={this.state.scoreRight} />
+              </div>
+            </div>
+          }
+          {this.state.showMessage &&
+            <Message />
+          }
+        </div>
       </div>
     );
   }
