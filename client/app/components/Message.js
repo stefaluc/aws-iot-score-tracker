@@ -5,7 +5,9 @@ import '../styles/main.css';
 const Message = (props) => {
   return (
     <div>
-      Double click again to reset the score
+      {(typeof props.messageType === 'object') &&
+        <span>{`${props.messageType.winner} Team is the winner!`}</span>
+      }
     </div>
   );
 }

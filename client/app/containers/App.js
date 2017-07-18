@@ -1,3 +1,4 @@
+import React from 'react';
 import io from 'socket.io-client';
 const socket = io();
 
@@ -17,11 +18,25 @@ class App extends React.Component {
       scoreLeft: 0,
       scoreRight: 0,
       showMessage: false,
-      bgColor: 'grey',
+      messageType: '',
     };
 
     this.changeBackground = this.changeBackground.bind(this);
     this.resetScore = this.resetScore.bind(this);
+  }
+
+  componentWillMount() {
+    console.log('componentWillMount');
+    const { scoreLeft, scoreRight } = this.state;
+    // first to 8, win by 2
+    if ((scoreLeft >= 1 )){//|| scoreRight >= 8) && (Math.abs(scoreLeft - scoreRight) > 1)) {
+      console.log('reached');
+      this.setState({
+        messageType: {
+          winner: (scoreLeft > scoreRight) ? 'Left' : 'Right',
+        }
+      });
+    }
   }
 
   componentDidMount() {
@@ -36,18 +51,17 @@ class App extends React.Component {
           this.setState({scoreRight: this.state.scoreRight + 1});
         }
       } else if (clickType === 'DOUBLE') {
-        if (!this.state.showMessage) { // first DOUBLE click
+        if (!this.state.messageType) { // first DOUBLE click
           // user gets 15 seconds to click again
-          setTimeout(() => { this.setState({showMessage: false}); }, 15000);
+          setTimeout(() => { this.setState({messageType: ''}); }, 15000);
           this.setState({
-            showMessage: true,
             scoreRight: this.state.scoreRight + 1, // temporary until another button is purchased
           });
         } else { // two DOUBLE clicks within 15 seconds
           this.setState({
             scoreLeft: 0,
             scoreRight: 0,
-            showMessage: false,
+            messageType: '',
           });
         }
       }
@@ -65,15 +79,17 @@ class App extends React.Component {
   }
 
   render() {
+    console.log('render');
     return (
       <div id="main">
         <Title resetScore={this.resetScore} />
-        {!this.state.showMessage &&
+
+        {!this.state.messageType &&
           <Teams scoreLeft={this.state.scoreLeft}
                  scoreRight={this.state.scoreRight} />
         }
-        {this.state.showMessage &&
-          <Message />
+        {this.state.messageType &&
+          <Message messageType={this.state.messageType} />
         }
       </div>
     );
