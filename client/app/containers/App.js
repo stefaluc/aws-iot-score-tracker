@@ -1,10 +1,11 @@
-import React from 'react';
 import io from 'socket.io-client';
 const socket = io();
 
 import { SERIAL_LEFT, SERIAL_RIGHT } from '../consts.js';
 
-import Score from '../components/Score';
+import Title from '../components/Title';
+import Beer from '../components/Beer';
+import Teams from '../components/Teams';
 import Message from '../components/Message';
 import '../styles/main.css';
 
@@ -24,6 +25,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    // listen for message from server
     socket.on('message', (data) => {
       const { serialNumber, batteryVoltage, clickType } = JSON.parse(data);
 
@@ -65,25 +67,14 @@ class App extends React.Component {
   render() {
     return (
       <div id="main">
-        <div id="reset-button" onClick={this.resetScore}>Reset Score</div>
-        <div id="display">
-          <span id="title">BEER DIE</span>
-          {!this.state.showMessage &&
-            <div id="teams">
-              <div className="teams-side left">
-                <span className="teams-title left">Left Team</span>
-                <Score score={this.state.scoreLeft} />
-              </div>
-              <div className="teams-side right">
-                <span className="teams-title right">Right Team</span>
-                <Score score={this.state.scoreRight} />
-              </div>
-            </div>
-          }
-          {this.state.showMessage &&
-            <Message />
-          }
-        </div>
+        <Title resetScore={this.resetScore} />
+        {!this.state.showMessage &&
+          <Teams scoreLeft={this.state.scoreLeft}
+                 scoreRight={this.state.scoreRight} />
+        }
+        {this.state.showMessage &&
+          <Message />
+        }
       </div>
     );
   }

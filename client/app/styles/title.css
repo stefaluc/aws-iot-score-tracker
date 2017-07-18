@@ -1,0 +1,30 @@
+#reset-button {
+  width: 150px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  background-color: #666;
+  transition: background-color 0.5s;
+  color: #FFF;
+  font-weight: 300;
+  font-size: 1.2em;
+}
+#reset-button:hover {
+  background-color: #777;
+  cursor: pointer;
+}
+
+#title {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  font-size: 4em;
+  font-weight: 300;
+  letter-spacing: 15px;
+  background-color: #666;
+  color: #FFF;
+}

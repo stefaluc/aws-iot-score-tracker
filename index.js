@@ -18,7 +18,5 @@ server.listen(port, () => {
 });
 
 app.use(express.static(`${__dirname}/client/public`));
-// client needs this served to use socket.io
-app.use(express.static(`${__dirname}/node_modules/socket.io-client/dist`));
 
 io.on('connection', () => { console.log("Connected to client socket") });
