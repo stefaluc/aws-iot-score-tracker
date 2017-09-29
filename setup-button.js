@@ -3,12 +3,12 @@ const deviceModule = require('aws-iot-device-sdk').device;
 const TOPIC = 'button_message';
 
 module.exports = () => {
-  let certPath = '/home/lucas/aws/certs/';
+  let certPath = '/home/stefaluc/aws-iot-score-tracker/certs/';
   const device = deviceModule({
-    keyPath: `${certPath}Desktop.private.key`,
-    certPath: `${certPath}Desktop.cert.pem`,
+    keyPath: `${certPath}Laptop.private.key`,
+    certPath: `${certPath}Laptop.cert.pem`,
     caPath: `${certPath}root-CA.crt`,
-    clientId: 'Desktop',
+    clientId: 'Laptop',
     host: 'akm6bi8kvgkg8.iot.us-west-2.amazonaws.com',
   });
 
